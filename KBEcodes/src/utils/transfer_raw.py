@@ -1,7 +1,7 @@
 import numpy as np
 from math import sqrt
 def set_param(mode = 'default'):
-	model_path = "/Users/CaiYaohui/Documents/Lab/KBEcodes/src/utils/wn.embeddings"
+	model_path = "./utils/wn.embeddings"
 	ent_embeddings = []
 	with open(model_path, "r") as f:
 		line = f.readline()
