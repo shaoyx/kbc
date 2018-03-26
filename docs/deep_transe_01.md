@@ -4,7 +4,7 @@
 
    ````reStructuredText
    #	TransE Setting
-   	  batch -----> 128
+         batch -----> 128
       cp_ratio -----> 0.5
            dim -----> 64
            ent -----> ../dat/wordnet-mlj12/train.entlist
