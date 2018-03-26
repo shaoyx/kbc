@@ -2,7 +2,7 @@
 
 1. ##### Parameter Setting
 
-   ````python
+   ````reStructuredText
    #	TransE Setting
    	  batch -----> 128
       cp_ratio -----> 0.5
@@ -33,7 +33,7 @@
 
 2. ##### Results
 
-   ````python
+   ````reStructuredText
    Hits@1              : 0.0482
    Hits@1(filter)      : 0.0
    Hits@10             : 0.7046

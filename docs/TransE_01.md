@@ -2,7 +2,7 @@
 
 1. ##### Parameter Setting
 
-   ````C++
+   ````reStructuredText
    // 	TransE Setting
    	batch -----> 128
      cp_ratio -----> 0.5
@@ -34,7 +34,7 @@
 
 2. ##### Results
 
-   ````
+   ````reStructuredText
    Hits@1              : 0.0166
    Hits@1(filter)      : 0.0
    Hits@10             : 0.722
@@ -46,3 +46,4 @@
    ````
 
    ​
+
