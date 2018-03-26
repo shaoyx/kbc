@@ -28,16 +28,6 @@ if __name__ == "__main__":
 	log_loss1 = read_loss(import_path1)
 	log_loss2 = read_loss(import_path2)
 
-	# plt.figure('TransE')
-	# plt.xlabel('epoch')
-	# plt.ylabel('The log of loss function')
-	# plt.plot(log_loss1)
-
-	# plt.figure('deep_TransE')
-	# plt.xlabel('epoch')
-	# plt.ylabel('The log of loss function')
-	# plt.plot(log_loss2)
-
 	plt.figure('TransE & deep_TransE')
 	plt.xlabel('epoch')
 	plt.ylabel('The log of loss function')
