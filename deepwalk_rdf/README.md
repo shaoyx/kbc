@@ -28,7 +28,7 @@ python3 RDF2edgelist.py
 
 输入命令：
 
-```python
+```
 python3 deepwalk_rdf/deepwalk/__main__.py --format edgelist --input ../datasrc/osp_triplet.edgelist --output ../datasrc/osp.repre > trainrep.res
 ```
 
