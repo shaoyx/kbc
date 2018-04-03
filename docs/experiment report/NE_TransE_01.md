@@ -26,7 +26,26 @@
      save_step -----> 10
          train -----> ../dat/FB15k/freebase_mtr100_mte100-train.txt
          valid -----> None
+         
    //	NE parameters
+   //	改过的
+
+   --format edgelist
+   --number-walks 30
+   --input xxxxxx
+   --output xxxxxx
+   --walk-length 50
+   --window-size 7
+
+   //	没改的
+   --excludlist default
+   --matfile-variable-name default='network',
+   --max-memory-data-size default=1000000000, type=int
+   --representation-size', default=64, type=int,
+   --seed', default=0, type=int,
+   --undirected', default=True, type=bool,
+   --vertex-freq-degree, default=False
+   --workers', default=1, type=int
    ````
 
 2. ##### Results
