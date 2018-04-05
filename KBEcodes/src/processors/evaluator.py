@@ -22,6 +22,10 @@ class Evaluator(object):
         self.id2obj_list = []
         self.sr2o = {}
         self.ro2s = {}
+        self.raw_failures = []
+        self.raw_inv_failures = []
+        self.flt_failures = []
+        self.flt_inv_failures = []
 
     def run(self, model, dataset):
         if self.metric == 'mrr':
@@ -59,6 +63,7 @@ class Evaluator(object):
             n_corr_h1_raw += sum(1 for rank in raw_ranks if rank <= 1)
             n_corr_h3_raw += sum(1 for rank in raw_ranks if rank <= 3)
             n_corr_h10_raw += sum(1 for rank in raw_ranks if rank <= 10)
+            self.store_failures(subs, rels, objs, raw_scores, raw_ranks, self.raw_failures)
             # filter
             if self.filtered:
                 flt_scores = self.cal_filtered_score_fast(subs, rels, objs, ids, raw_scores)
@@ -67,6 +72,7 @@ class Evaluator(object):
                 n_corr_h1_flt += sum(1 for rank in flt_ranks if rank <=1)
                 n_corr_h3_flt += sum(1 for rank in flt_ranks if rank <=3)
                 n_corr_h10_flt += sum(1 for rank in flt_ranks if rank <=10)
+                self.store_failures(subs, rels, objs, flt_scores, flt_ranks, self.flt_failures)
 
             # search subjects
             raw_scores_inv = model.cal_scores_inv(rels, objs)
@@ -75,6 +81,8 @@ class Evaluator(object):
             n_corr_h1_raw += sum(1 for rank in raw_ranks_inv if rank <= 1)
             n_corr_h3_raw += sum(1 for rank in raw_ranks_inv if rank <= 3)
             n_corr_h10_raw += sum(1 for rank in raw_ranks_inv if rank <= 10)
+            self.store_failures(subs, rels, objs, raw_scores_inv, raw_ranks_inv, self.raw_inv_failures)
+
             # filter
             if self.filtered:
                 flt_scores_inv = self.cal_filtered_score_inv_fast(subs, rels, objs, ids, raw_scores_inv)
@@ -83,6 +91,7 @@ class Evaluator(object):
                 n_corr_h1_flt += sum(1 for rank in flt_ranks_inv if rank <= 1)
                 n_corr_h3_flt += sum(1 for rank in flt_ranks_inv if rank <= 3)
                 n_corr_h10_flt += sum(1 for rank in flt_ranks_inv if rank <= 10)
+                self.store_failures(subs, rels, objs, flt_scores_inv, flt_ranks_inv, self.flt_inv_failures)
 
             start_id += len(samples)
 
@@ -184,3 +193,51 @@ class Evaluator(object):
             self.id2sub_list.append(ss)
             self.sr2o[(s, r)] = os
             self.ro2s[(r, o)] = ss
+
+    # filter failure cases
+    def store_failures(self, subs, rels, objs, scores, ranks, failures):
+        for idx in range(len(ranks)):
+            s = subs[idx]
+            r = rels[idx]
+            o = objs[idx]
+            score = scores[idx]
+            rank = ranks[idx]
+            if rank > 10:
+                case = [s,r,o,rank]
+                topk = self.find_top_k(score,10)
+                for v in topk:
+                    case.append(v)
+                failures.append(case)
+
+    def find_top_k(self, score, k):
+        res = []
+        for idx in range(len(score)):
+            res_size = len(res)
+            if res_size < k:
+                res.append(idx)
+            else:
+                min_v = 0
+                for t in range(res_size):
+                    if score[res[t]] < score[res[min_v]]:
+                        min_v = t
+                if score[res[min_v]] < score[idx]:
+                    res[min_v] = idx
+        return res
+
+    def save_failure_cases(self, ent_voca, rel_voca, path):
+        # save raw_failure
+        self.save_failures(self.raw_failures, ent_voca, rel_voca, path+"_raw_failure")
+        # save flt_failure
+        self.save_failures(self.flt_failures, ent_voca, rel_voca, path+"_flt_failure")
+        # save raw_inv_failure
+        self.save_failures(self.raw_inv_failures, ent_voca, rel_voca, path+"_raw_inv_failure")
+        # save flt_inv_failure
+        self.save_failures(self.flt_inv_failures, ent_voca, rel_voca, path+"_flt_inv_failure")
+
+    def save_failures(self, failures, ent_voca, rel_voca, path):
+        with open(path, "w") as fout:
+            for f in failures:
+                out = [ent_voca.id2word[f[0]], rel_voca.id2word[f[1]], ent_voca.id2word[f[2]], f[3]]
+                for idx in range(4, len(f)):
+                    out.append(ent_voca.id2word[f[idx]])
+                print(out, file=fout)
