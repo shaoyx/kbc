@@ -50,19 +50,25 @@ class Evaluator(object):
         n_corr_h10_raw = 0
         n_corr_h10_flt = 0
         start_id = 0
-        sum_rr_raw_classified = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
-        sum_rr_flt_classified = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
-        n_corr_h10_raw_classified = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
-        n_corr_h3_raw_classified = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
-        n_corr_h1_raw_classified = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
+        # sum_rr_raw_classified = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
+        # sum_rr_flt_classified = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
+        # n_corr_h10_raw_classified = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
+        # n_corr_h3_raw_classified = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
+        # n_corr_h1_raw_classified = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
         n_corr_h10_flt_classified = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
-        n_corr_h3_flt_classified = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
-        n_corr_h1_flt_classified = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
-        n_rel_num = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
+        n_corr_h10_flt_classified_inv = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
+        # n_corr_h3_flt_classified = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
+        # n_corr_h1_flt_classified = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
+        # n_rel_num = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
+        n_rel_num_fil = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
+        n_rel_num_fil_inv = {'1-1':0, '1-n':0, 'n-1':0, 'n-n':0}
 
-        for sample in dataset.batch_iter(1, rand_flg=False):
-            sub, rel, obj = sample[0, 0], sample[0, 1], sample[0, 2]
-            n_rel_num[self.reltypes[rel]] = n_rel_num[self.reltypes[rel]] + 1
+
+
+        # for sample in dataset.batch_iter(1, rand_flg=False):
+        #     sub, rel, obj = sample[0, 0], sample[0, 1], sample[0, 2]
+        #     n_rel_num[self.reltypes[rel]] = n_rel_num[self.reltypes[rel]] + 1
+        # print(n_rel_num['1-1'], n_rel_num['1-n'], n_rel_num['n-1'], n_rel_num['n-n'])
 
         for samples in dataset.batch_iter(self.batchsize, rand_flg=False):
             subs, rels, objs = samples[:, 0], samples[:, 1], samples[:, 2]
@@ -76,13 +82,13 @@ class Evaluator(object):
             n_corr_h3_raw += sum(1 for rank in raw_ranks if rank <= 3)
             n_corr_h10_raw += sum(1 for rank in raw_ranks if rank <= 10)
 
-            cnt = 0
-            for rank in raw_ranks:
-                sum_rr_raw_classified[self.reltypes[rels[cnt]]] += float(1/rank)
-                n_corr_h1_raw_classified[self.reltypes[rels[cnt]]] += rank <= 1
-                n_corr_h3_raw_classified[self.reltypes[rels[cnt]]] += rank <= 3
-                n_corr_h10_raw_classified[self.reltypes[rels[cnt]]] += rank <= 10
-                cnt = cnt + 1
+            # cnt = 0
+            # for rank in raw_ranks:
+                # sum_rr_raw_classified[self.reltypes[rels[cnt]]] += float(1/rank)
+                # n_corr_h1_raw_classified[self.reltypes[rels[cnt]]] += rank <= 1
+                # n_corr_h3_raw_classified[self.reltypes[rels[cnt]]] += rank <= 3
+                # n_corr_h10_raw_classified[self.reltypes[rels[cnt]]] += rank <= 10
+                # cnt = cnt + 1
 
             # filter
             if self.filtered:
@@ -95,10 +101,12 @@ class Evaluator(object):
 
                 cnt = 0
                 for rank in flt_ranks:
-                    sum_rr_flt_classified[self.reltypes[rels[cnt]]] += float(1/rank)
-                    n_corr_h1_flt_classified[self.reltypes[rels[cnt]]] += rank <= 1
-                    n_corr_h3_flt_classified[self.reltypes[rels[cnt]]] += rank <= 3
-                    n_corr_h10_flt_classified[self.reltypes[rels[cnt]]] += rank <= 10
+                    # sum_rr_flt_classified[self.reltypes[rels[cnt]]] += float(1/rank)
+                    # n_corr_h1_flt_classified[self.reltypes[rels[cnt]]] += rank <= 1
+                    # n_corr_h3_flt_classified[self.reltypes[rels[cnt]]] += rank <= 3
+                    if rank <= 10:
+                        n_corr_h10_flt_classified[self.reltypes[rels[cnt]]] += 1
+                    n_rel_num_fil[self.reltypes[rels[cnt]]] +=1
                     cnt = cnt + 1
 
 
@@ -110,13 +118,13 @@ class Evaluator(object):
             n_corr_h3_raw += sum(1 for rank in raw_ranks_inv if rank <= 3)
             n_corr_h10_raw += sum(1 for rank in raw_ranks_inv if rank <= 10)
 
-            cnt = 0
-            for rank in raw_ranks:
-                sum_rr_raw_classified[self.type_inv(self.reltypes[rels[cnt]])] += float(1/rank)
-                n_corr_h1_raw_classified[self.type_inv(self.reltypes[rels[cnt]])] += rank <= 1
-                n_corr_h3_raw_classified[self.type_inv(self.reltypes[rels[cnt]])] += rank <= 3
-                n_corr_h10_raw_classified[self.type_inv(self.reltypes[rels[cnt]])] += rank <= 10
-                cnt = cnt + 1
+            # cnt = 0
+            # for rank in raw_ranks:
+            #     sum_rr_raw_classified[self.type_inv(self.reltypes[rels[cnt]])] += float(1/rank)
+            #     n_corr_h1_raw_classified[self.type_inv(self.reltypes[rels[cnt]])] += rank <= 1
+            #     n_corr_h3_raw_classified[self.type_inv(self.reltypes[rels[cnt]])] += rank <= 3
+            #     n_corr_h10_raw_classified[self.type_inv(self.reltypes[rels[cnt]])] += rank <= 10
+            #     cnt = cnt + 1
 
 
 
@@ -130,15 +138,19 @@ class Evaluator(object):
                 n_corr_h10_flt += sum(1 for rank in flt_ranks_inv if rank <= 10)
 
                 cnt = 0
-                for rank in flt_ranks:
-                    sum_rr_flt_classified[self.type_inv(self.reltypes[rels[cnt]])] += float(1/rank)
-                    n_corr_h1_flt_classified[self.type_inv(self.reltypes[rels[cnt]])] += rank <= 1
-                    n_corr_h3_flt_classified[self.type_inv(self.reltypes[rels[cnt]])] += rank <= 3
-                    n_corr_h10_flt_classified[self.type_inv(self.reltypes[rels[cnt]])] += rank <= 10
+                for rank in flt_ranks_inv:
+                    # sum_rr_flt_classified[self.type_inv(self.reltypes[rels[cnt]])] += float(1/rank)
+                    # n_corr_h1_flt_classified[self.type_inv(self.reltypes[rels[cnt]])] += rank <= 1
+                    # n_corr_h3_flt_classified[self.type_inv(self.reltypes[rels[cnt]])] += rank <= 3
+                    if rank <= 10:
+                        n_corr_h10_flt_classified_inv[self.type_inv(self.reltypes[rels[cnt]])] += 1
+                    n_rel_num_fil_inv[self.type_inv(self.reltypes[rels[cnt]])] += 1
                     cnt = cnt + 1
 
 
             start_id += len(samples)
+        # print(n_rel_num['1-1'], n_rel_num['1-n'], n_rel_num['n-1'], n_rel_num['n-n'])
+        print(n_rel_num_fil['1-1'], n_rel_num_fil['1-n'], n_rel_num_fil['n-1'], n_rel_num_fil['n-n'])
 
         return {'MRR': sum_rr_raw/n_sample/2,
                 'Hits@1': n_corr_h1_raw/n_sample/2,
@@ -149,41 +161,45 @@ class Evaluator(object):
                 'Hits@3(filter)': n_corr_h3_flt/n_sample/2,
                 'Hits@10(filter)': n_corr_h10_flt/n_sample/2,
 
-                'MRR_1-1': sum_rr_raw_classified['1-1']/n_rel_num['1-1']/2,
-                'Hits@1_1-1': n_corr_h1_raw_classified['1-1']/n_rel_num['1-1']/2,
-                'Hits@3_1-1': n_corr_h3_raw_classified['1-1']/n_rel_num['1-1']/2,
-                'Hits@10_1-1': n_corr_h10_raw_classified['1-1']/n_rel_num['1-1']/2,
-                'MRR(filter)_1-1': sum_rr_flt_classified['1-1']/n_rel_num['1-1']/2,
-                'Hits@1(filter)_1-1': n_corr_h1_flt_classified['1-1']/n_rel_num['1-1']/2,
-                'Hits@3(filter)_1-1': n_corr_h3_flt_classified['1-1']/n_rel_num['1-1']/2,
-                'Hits@10(filter)_1-1': n_corr_h10_flt_classified['1-1']/n_rel_num['1-1']/2,
+                # 'MRR_1-1': sum_rr_raw_classified['1-1']/n_rel_num['1-1']/2,
+                # 'Hits@1_1-1': n_corr_h1_raw_classified['1-1']/n_rel_num['1-1']/2,
+                # 'Hits@3_1-1': n_corr_h3_raw_classified['1-1']/n_rel_num['1-1']/2,
+                # 'Hits@10_1-1': n_corr_h10_raw_classified['1-1']/n_rel_num['1-1']/2,
+                # 'MRR(filter)_1-1': sum_rr_flt_classified['1-1']/n_rel_num['1-1']/2,
+                # 'Hits@1(filter)_1-1': n_corr_h1_flt_classified['1-1']/n_rel_num['1-1']/2,
+                # 'Hits@3(filter)_1-1': n_corr_h3_flt_classified['1-1']/n_rel_num['1-1']/2,
+                'Hits@10(filter)_head_1-1': n_corr_h10_flt_classified['1-1']/n_rel_num_fil['1-1'],
+                'Hits@10(filter)_tail_1-1': n_corr_h10_flt_classified_inv['1-1']/n_rel_num_fil_inv['1-1'],
 
-                'MRR_1-n': sum_rr_raw_classified['1-n']/n_rel_num['1-n']/2,
-                'Hits@1_1-n': n_corr_h1_raw_classified['1-n']/n_rel_num['1-n']/2,
-                'Hits@3_1-n': n_corr_h3_raw_classified['1-n']/n_rel_num['1-n']/2,
-                'Hits@10_1-n': n_corr_h10_raw_classified['1-n']/n_rel_num['1-n']/2,
-                'MRR(filter)_1-n': sum_rr_flt_classified['1-n']/n_rel_num['1-n']/2,
-                'Hits@1(filter)_1-n': n_corr_h1_flt_classified['1-n']/n_rel_num['1-n']/2,
-                'Hits@3(filter)_1-n': n_corr_h3_flt_classified['1-n']/n_rel_num['1-n']/2,
-                'Hits@10(filter)_1-n': n_corr_h10_flt_classified['1-n']/n_rel_num['1-n']/2,
+                # 'MRR_1-n': sum_rr_raw_classified['1-n']/n_rel_num['1-n']/2,
+                # 'Hits@1_1-n': n_corr_h1_raw_classified['1-n']/n_rel_num['1-n']/2,
+                # 'Hits@3_1-n': n_corr_h3_raw_classified['1-n']/n_rel_num['1-n']/2,
+                # 'Hits@10_1-n': n_corr_h10_raw_classified['1-n']/n_rel_num['1-n']/2,
+                # 'MRR(filter)_1-n': sum_rr_flt_classified['1-n']/n_rel_num['1-n']/2,
+                # 'Hits@1(filter)_1-n': n_corr_h1_flt_classified['1-n']/n_rel_num['1-n']/2,
+                # 'Hits@3(filter)_1-n': n_corr_h3_flt_classified['1-n']/n_rel_num['1-n']/2,
+                'Hits@10(filter)_head_1-n': n_corr_h10_flt_classified['1-n']/n_rel_num_fil['1-n'],
+                'Hits@10(filter)_tail_1-n': n_corr_h10_flt_classified_inv['1-n']/n_rel_num_fil_inv['1-n'],
 
-                'MRR_n-1': sum_rr_raw_classified['n-1']/n_rel_num['n-1']/2,
-                'Hits@1_n-1': n_corr_h1_raw_classified['n-1']/n_rel_num['n-1']/2,
-                'Hits@3_n-1': n_corr_h3_raw_classified['n-1']/n_rel_num['n-1']/2,
-                'Hits@10_n-1': n_corr_h10_raw_classified['n-1']/n_rel_num['n-1']/2,
-                'MRR(filter)_n-1': sum_rr_flt_classified['n-1']/n_rel_num['n-1']/2,
-                'Hits@1(filter)_n-1': n_corr_h1_flt_classified['n-1']/n_rel_num['n-1']/2,
-                'Hits@3(filter)_n-1': n_corr_h3_flt_classified['n-1']/n_rel_num['n-1']/2,
-                'Hits@10(filter)_n-1': n_corr_h10_flt_classified['n-1']/n_rel_num['n-1']/2,
+                # 'MRR_n-1': sum_rr_raw_classified['n-1']/n_rel_num['n-1']/2,
+                # 'Hits@1_n-1': n_corr_h1_raw_classified['n-1']/n_rel_num['n-1']/2,
+                # 'Hits@3_n-1': n_corr_h3_raw_classified['n-1']/n_rel_num['n-1']/2,
+                # 'Hits@10_n-1': n_corr_h10_raw_classified['n-1']/n_rel_num['n-1']/2,
+                # 'MRR(filter)_n-1': sum_rr_flt_classified['n-1']/n_rel_num['n-1']/2,
+                # 'Hits@1(filter)_n-1': n_corr_h1_flt_classified['n-1']/n_rel_num['n-1']/2,
+                # 'Hits@3(filter)_n-1': n_corr_h3_flt_classified['n-1']/n_rel_num['n-1']/2,
+                'Hits@10(filter)_head_n-1': n_corr_h10_flt_classified['n-1']/n_rel_num_fil['n-1'],
+                'Hits@10(filter)_tail_n-1': n_corr_h10_flt_classified_inv['n-1']/n_rel_num_fil_inv['n-1'],
 
-                'MRR_n-n': sum_rr_raw_classified['n-n']/n_rel_num['n-n']/2,
-                'Hits@1_n-n': n_corr_h1_raw_classified['n-n']/n_rel_num['n-n']/2,
-                'Hits@3_n-n': n_corr_h3_raw_classified['n-n']/n_rel_num['n-n']/2,
-                'Hits@10_n-n': n_corr_h10_raw_classified['n-n']/n_rel_num['n-n']/2,
-                'MRR(filter)_n-n': sum_rr_flt_classified['n-n']/n_rel_num['n-n']/2,
-                'Hits@1(filter)_n-n': n_corr_h1_flt_classified['n-n']/n_rel_num['n-n']/2,
-                'Hits@3(filter)_n-n': n_corr_h3_flt_classified['n-n']/n_rel_num['n-n']/2,
-                'Hits@10(filter)_n-n': n_corr_h10_flt_classified['n-n']/n_rel_num['n-n']/2
+                # 'MRR_n-n': sum_rr_raw_classified['n-n']/n_rel_num['n-n']/2,
+                # 'Hits@1_n-n': n_corr_h1_raw_classified['n-n']/n_rel_num['n-n']/2,
+                # 'Hits@3_n-n': n_corr_h3_raw_classified['n-n']/n_rel_num['n-n']/2,
+                # 'Hits@10_n-n': n_corr_h10_raw_classified['n-n']/n_rel_num['n-n']/2,
+                # 'MRR(filter)_n-n': sum_rr_flt_classified['n-n']/n_rel_num['n-n']/2,
+                # 'Hits@1(filter)_n-n': n_corr_h1_flt_classified['n-n']/n_rel_num['n-n']/2,
+                # 'Hits@3(filter)_n-n': n_corr_h3_flt_classified['n-n']/n_rel_num['n-n']/2,
+                'Hits@10(filter)_head_n-n': n_corr_h10_flt_classified['n-n']/n_rel_num_fil['n-n'],
+                'Hits@10(filter)_tail_n-n': n_corr_h10_flt_classified_inv['n-n']/n_rel_num_fil_inv['n-n']
                 }
 
 
