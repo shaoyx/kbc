@@ -23,7 +23,7 @@ class DBPediaGraph(RdfGraph):
                 prog += 1
                 self.add_edge(recs[0], recs[1], recs[2])
                 if prog % 10000 == 0:
-                    logger.info('progress: {}, cost: {}'.format(prog, time()-start))
+                    logger.info('progress: {}, cost: {}'.format(prog, time.time()-start))
                     start = time.time()
             
 
