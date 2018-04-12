@@ -5,7 +5,7 @@ import time
 import os
 import sys
 
-from utils import dbpediacleaner, fbcleanre, rdfcleaner
+from utils import dbpediacleaner, fbcleaner, rdfcleaner
 
 DEFAULT_LOG_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)),
                                'log/{}'.format(datetime.now().strftime('%Y%m%d_%H:%M')))
@@ -44,7 +44,7 @@ if __name__ == '__main__':
         g = dbpediacleaner.DBPediaCleaner(args).run()
     elif args.cleaner == "fb":
         g = fbcleaner.FBCleaner(args).run()
-    elif args.clenaer == "yago":
+    elif args.cleaner == "yago":
         g = yagocleaner.YagoCleaner(args).run()
     elif args.cleaner == "dbpedia_dict":
         dbpediacleaner.DBPediaCleaner(args).generate_rdf_dict()

@@ -12,7 +12,7 @@ class DBPediaGraph(RdfGraph):
 
     def load(self, path):
         prog = 0
-        start = time()
+        start = time.time()
         logger = logging.getLogger()
         with open(path) as fd:
             for line in fd.readlines():
@@ -24,6 +24,6 @@ class DBPediaGraph(RdfGraph):
                 self.add_edge(recs[0], recs[1], recs[2])
                 if prog % 10000 == 0:
                     logger.info('progress: {}, cost: {}'.format(prog, time()-start))
-                    start = time()
+                    start = time.time()
             
 

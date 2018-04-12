@@ -1,23 +1,30 @@
 from utils.rdfcleaner import RDFCleaner
 from model.yago_graph import YagoGraph
 
+import time
+import logging
+
 class YagoCleaner(RDFCleaner):
     def __init__(self, args):
         super(YagoCleaner, self).__init__(args)
+
+    def is_iri(self, label):
+        return label.strip().startswith('"') == False
 
     def load_rdf_graph(self, path):
         g = YagoGraph()
         g.load(path)
         return g
 
-    def generator_rdf_dict(self):
-        start = time()
+    def generate_rdf_dict(self):
+        start = time.time()
         prog = 0
+        logger = logging.getLogger()
 
         node_iri_dict = {}
         edge_iri_dict = {}
 
-        with open(self.graph) as fd:
+        with open(self.rdfpath) as fd:
             for line in fd.readlines():
                 if len(line.strip()) == 0 or line.strip().startswith("#") or line.strip().startswith("@"):
                     continue
@@ -27,12 +34,12 @@ class YagoCleaner(RDFCleaner):
                 rel = recs[1]
                 obj = recs[2]
 
-                if sub not in self.node_iri_dict:
+                if sub not in node_iri_dict:
                     node_iri_dict[sub] = 1
                 else:
                     node_iri_dict[sub] += 1
                 
-                if rel not in self.edge_iri_dict:
+                if rel not in edge_iri_dict:
                     edge_iri_dict[rel] = 1
                 else:
                     edge_iri_dict[rel] += 1
@@ -44,7 +51,7 @@ class YagoCleaner(RDFCleaner):
 
                 if prog % 10000 == 0:
                     logger.info('progress: {}, cost: {}'.format(prog, time()-start))
-                    start = time()
+                    start = time.time()
         
         with open(self.outpath+".entlist", "w") as fent, open(out_path+".rellist", "w") as frel:
             for k,v in node_iri_dict.items():

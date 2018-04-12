@@ -40,7 +40,7 @@ class RDFCleaner(object):
     def load_rdf_graph(self, path):
         raise NotImplementedError
 
-    def generator_rdf_dict(self):
+    def generate_rdf_dict(self):
         raise NotImplementedError
 
     def extract_triples(self, rdfgraph):
