@@ -1,6 +1,9 @@
 import argparse
 import random
 
+import time
+import logging
+
 class RDFCleaner(object):
     def __init__(self, args):
         self.entity_freq_threshold = args.ent_th
@@ -30,13 +33,19 @@ class RDFCleaner(object):
                 ovalid.write(e[0]+"\t"+e[1]+"\t"+e[2]+"\n")
 
     def run(self):
-        print("Loading graphs ... ")
+        start = time.time()
+        logger = logging.getLogger()
+        logger.info("Beging Loading graphs ... ")
         g = self.load_rdf_graph(self.ent_dict_path, self.rel_dict_path, self.rdfpath)
-        print("graph size {}\nExtracting triples ... ".format(g.get_size()))
+        logger.info("Graph size{}, cost: {}".format(g.get_size, time.time() - start))
+        start = time.time()
+        logger.info("Extracting triples ... ")
         triples = self.extract_triples(g)
-        print("Spliting test/train/valid sets ... ")
+        logger.info("Extracting cost: {}".format(time.time() - start))
+        start = time.time()
+        logger.info("Spliting test/train/valid sets ... ")
         self.split_datasets(triples)
-        print("Saving datasets ... ")
+        logger.info("Extracting cost: {}".format(time.time() - start))
         self._finalize()
 
     def load_rdf_graph(self, path):
