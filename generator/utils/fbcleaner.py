@@ -11,8 +11,9 @@ class FBCleaner(RDFCleaner):
     def is_iri(self, label):
         return label.strip().startswith('"') == False
 
-    def load_rdf_graph(self, path):
+    def load_rdf_graph(self, ent_dict_path, rel_dict_path, path):
         g = FBGraph()
+        g.load_dict(ent_dict_path, rel_dict_path)
         g.load(path)
         return g
         

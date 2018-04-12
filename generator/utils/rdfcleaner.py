@@ -7,6 +7,8 @@ class RDFCleaner(object):
         self.relation_freq_threshold = args.rel_th
 
         self.rdfpath = args.graph
+        self.ent_dict_path = args.ent_dict
+        self.rel_dict_path = args.rel_dict
         self.outpath = args.outpath
 
         self.valid_size = args.valid_size
@@ -29,7 +31,7 @@ class RDFCleaner(object):
 
     def run(self):
         print("Loading graphs ... ")
-        g = self.load_rdf_graph(self.rdfpath)
+        g = self.load_rdf_graph(self.ent_dict_path, self.rel_dict_path, self.rdfpath)
         print("graph size {}\nExtracting triples ... ".format(g.get_size()))
         triples = self.extract_triples(g)
         print("Spliting test/train/valid sets ... ")

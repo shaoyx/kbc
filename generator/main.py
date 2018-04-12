@@ -14,6 +14,8 @@ logger = logging.getLogger()
 if __name__ == '__main__':
     p = argparse.ArgumentParser('Dataset Generator')
     p.add_argument('--graph', type=str, help='path of knowledge graph')
+    p.add_argument('--ent_dict', type=str, help='path of entity_dict')
+    p.add_argument('--rel_dict', type=str, help='path of relation_dict')
     p.add_argument('--outpath', type=str, help='output path for the dataset')
     p.add_argument('--cleaner', type=str, help='[dbpedia, fb, yago]')
     p.add_argument('--ent_th', type=float, help='threshold for filtering long-tail entity')

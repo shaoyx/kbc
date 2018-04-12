@@ -4,22 +4,26 @@ class Vocab(object):
         self.word2id = {}
         self.id2freq = []
 
-    def add(self, word):
+    def add(self, word, freq):
         if word not in self.id2word:
             self.word2id[word] = len(self.id2word)
             self.id2word.append(word)
-            self.id2freq.append(1)
-        else:
-            self.id2freq[self.word2id[word]] += 1
-
+            self.id2freq.append(int(freq))
+        
     def __len__(self):
         return len(self.id2word)
 
     def __getitem__(self, word):
         return self.word2id[word]
 
-    def exist(self, word):
-        return word in self.id2word
+    def get_frequency(self, wordid):
+        return self.id2freq[wordid]
 
-    def get_frequency(self, word):
-        return self.id2freq[self.word2id[word]]
+    @classmethod
+    def load(cls, vocab_path):
+        v = Vocab()
+        with open(vocab_path) as f:
+            for word in f:
+                recs = word.split("\t")
+                v.add(recs[0], recs[1])
+        return v
