@@ -15,7 +15,9 @@ class DBPediaCleaner(RDFCleaner):
 
     def load_rdf_graph(self, ent_dict_path, rel_dict_path, path):
         g = DBPediaGraph()
+        logger = logging.getLogger()
         g.load_dict(ent_dict_path, rel_dict_path)
+        logger.info("Finish loading dict")
         g.load(path)
         return g
 

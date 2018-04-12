@@ -15,7 +15,7 @@ class FBGraph(RdfGraph):
         start = time.time()
         logger = logging.getLogger()
         with open(path) as fd:
-            for line in fd.readlines():
+            for line in fd:
                 # add an edge into graph
                 if line.startswith("#"):
                     continue
