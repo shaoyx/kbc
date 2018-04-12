@@ -2,13 +2,11 @@ class Vocab(object):
     def __init__(self):
         self.id2word = []
         self.word2id = {}
-        self.id2freq = []
 
     def add(self, word, freq):
-        if word not in self.id2word:
+        if word not in self.word2id:
             self.word2id[word] = len(self.id2word)
-            self.id2word.append(word)
-            self.id2freq.append(int(freq))
+            self.id2word.append((word, int(freq)))
         
     def __len__(self):
         return len(self.id2word)
@@ -17,7 +15,7 @@ class Vocab(object):
         return self.word2id[word]
 
     def get_frequency(self, wordid):
-        return self.id2freq[wordid]
+        return self.id2word[wordid][1]
 
     @classmethod
     def load(cls, vocab_path):

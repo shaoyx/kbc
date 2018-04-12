@@ -47,7 +47,7 @@ class RdfGraph(object):
             if node.degree() >= degree_threshold:
                 for (dst, rel) in node.out_edges:
                     if self.node_list[dst].degree() >= degree_threshold and self.rel_vocab.get_frequency(rel):
-                        edge_list.append((self.ent_vocab.id2word[node.node_id], self.rel_vocab.id2word[rel], self.ent_vocab.id2word[dst]))
+                        edge_list.append((self.ent_vocab.id2word[node.node_id][0], self.rel_vocab.id2word[rel][0], self.ent_vocab.id2word[dst][0]))
         return edge_list
 
     def get_size(self):
