@@ -103,6 +103,3 @@ class RdfGraph(object):
 
     def load(self, graph_path):
         raise NotImplementedError
-
-    def generator_dict(self, graph_path):
-        raise NotImplementedError

@@ -40,6 +40,9 @@ class RDFCleaner(object):
     def load_rdf_graph(self, path):
         raise NotImplementedError
 
+    def generator_rdf_dict(self):
+        raise NotImplementedError
+
     def extract_triples(self, rdfgraph):
         degree_dist = rdfgraph.get_degree_dist()
         deg_sort = sorted(degree_dist)
