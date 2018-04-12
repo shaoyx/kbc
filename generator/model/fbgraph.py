@@ -19,7 +19,7 @@ class FBGraph(RdfGraph):
                 # add an edge into graph
                 if line.startswith("#"):
                     continue
-                recs = line.split("\t")
+                recs = line.strip().split("\t")
                 # prog += 1
                 sub = recs[0]
                 rel = recs[1]
