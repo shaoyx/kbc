@@ -22,8 +22,12 @@ class Vocab(object):
     @classmethod
     def load(cls, vocab_path):
         v = Vocab()
+        prog = 0
         with open(vocab_path) as f:
             for word in f:
+                prog += 1
                 recs = word.split("\t")
                 v.add(recs[0], recs[1])
+                if prog % 10000 == 0:
+                    print("progress:{}".format(prog))
         return v
