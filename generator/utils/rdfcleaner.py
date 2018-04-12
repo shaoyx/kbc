@@ -37,7 +37,7 @@ class RDFCleaner(object):
         logger = logging.getLogger()
         logger.info("Beging Loading graphs ... ")
         g = self.load_rdf_graph(self.ent_dict_path, self.rel_dict_path, self.rdfpath)
-        logger.info("Graph size{}, cost: {}".format(g.get_size, time.time() - start))
+        logger.info("Graph size{}, cost: {}".format(g.get_size(), time.time() - start))
         start = time.time()
         logger.info("Extracting triples ... ")
         triples = self.extract_triples(g)
@@ -57,7 +57,7 @@ class RDFCleaner(object):
     def extract_triples(self, rdfgraph):
         degree_dist = rdfgraph.get_degree_dist()
         deg_sort = sorted(degree_dist)
-        deg_threashold = deg_sort[int(len(deg_sort) * self.entity_freq_threshold)]
+        deg_threashold = max(10, deg_sort[int(len(deg_sort) * self.entity_freq_threshold)])
         return rdfgraph.extract_edges(deg_threashold, self.relation_freq_threshold)
 
     def split_datasets(self, triples):

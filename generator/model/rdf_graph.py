@@ -38,7 +38,7 @@ class RdfGraph(object):
 
 
     def get_degree_dist(self):
-        return [node.in_degree() for node in self.node_list]
+        return [node.degree() for node in self.node_list]
 
     def extract_edges(self, degree_threshold, relation_threshold):
         print("Threshold: ent={}, rel={}".format(degree_threshold, relation_threshold))
