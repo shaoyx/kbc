@@ -1,30 +1,20 @@
 from model.rdf_graph import RdfGraph
 
-import logging
-import time
-
-class DBPediaGraph(RdfGraph):
+class FBGraph(RdfGraph):
     def __init__(self):
-        super(DBPediaGraph, self).__init__()
+        super(FBGraph, self).__init__()
 
     def is_iri(self, label):
-        return label.startswith('"') == False
+        return label.strip().startswith('"') == False
 
     def load(self, path):
-        prog = 0
-        start = time()
-        logger = logging.getLogger()
         with open(path) as fd:
             for line in fd.readlines():
                 # add an edge into graph
                 if line.startswith("#"):
                     continue
-                recs = line.split(" ")
-                prog += 1
+                recs = line.split("\t")
                 self.add_edge(recs[0], recs[1], recs[2])
-                if prog % 10000 == 0:
-                    logger.info('progress: {}, cost: {}'.format(prog, time()-start))
-                    start = time()
 
     def generator_dict(self, path, out_path):
         start = time()
@@ -37,7 +27,7 @@ class DBPediaGraph(RdfGraph):
             for line in fd.readlines():
                 if line.startswith("#"):
                     continue
-                recs = line.strip().split(" ")
+                recs = line.strip().split("\t")
 
                 sub = recs[0]
                 rel = recs[1]
@@ -72,5 +62,3 @@ class DBPediaGraph(RdfGraph):
                 if len(k.strip()) == 0:
                     continue
                 frel.write("{}\t{}".format(k,v))
-            
-

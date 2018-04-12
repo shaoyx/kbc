@@ -100,6 +100,9 @@ class RdfGraph(object):
 
     def is_iri(self, str):
         raise NotImplementedError
-    
-    def load(cls, graph_path):
+
+    def load(self, graph_path):
+        raise NotImplementedError
+
+    def generator_dict(self, graph_path):
         raise NotImplementedError
