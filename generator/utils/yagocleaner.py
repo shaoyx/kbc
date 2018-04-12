@@ -32,7 +32,7 @@ class YagoCleaner(RDFCleaner):
 
                 sub = recs[0]
                 rel = recs[1]
-                obj = recs[2]
+                obj = recs[2].strip('. ')
 
                 if self.is_iri(obj) == False:
                     continue

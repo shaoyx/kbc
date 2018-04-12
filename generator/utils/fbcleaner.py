@@ -34,9 +34,9 @@ class FBCleaner(RDFCleaner):
                 rel = recs[1]
                 obj = recs[2]
 
-                if self.is_iri(obj) == False:
+                if self.is_iri(obj) == False or self.is_iri(sub) == False:
                     continue
-                    
+
                 if sub not in node_iri_dict:
                     node_iri_dict[sub] = 1
                 else:
