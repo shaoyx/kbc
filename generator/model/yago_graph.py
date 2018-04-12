@@ -1,7 +1,7 @@
 from model.rdf_graph import RdfGraph
 
-import time
-import logging
+# import time
+# import logging
 
 class YagoGraph(RdfGraph):
     def __init__(self):
@@ -11,9 +11,9 @@ class YagoGraph(RdfGraph):
         return label.strip().startswith('"') == False
 
     def load(self, path):
-        start = time.time()
-        prog = 0
-        logger = logging.getLogger()
+        # start = time.time()
+        # prog = 0
+        # logger = logging.getLogger()
         with open(path) as fd:
             for line in fd:
                 # add an edge into graph
@@ -21,7 +21,7 @@ class YagoGraph(RdfGraph):
                     continue
                 recs = line.split("\t")
                 
-                prog += 1
+                # prog += 1
                 sub = recs[0]
                 rel = recs[1]
                 obj = recs[2].strip('. \n')
@@ -29,6 +29,6 @@ class YagoGraph(RdfGraph):
                 if self.is_iri(sub) and self.is_iri(obj):
                     self.add_edge(sub, rel, obj)
 
-                if prog % 10000 == 0:
-                    logger.info('progress: {}, cost: {}'.format(prog, time.time()-start))
-                    start = time.time()
+                # if prog % 10000 == 0:
+                #     logger.info('progress: {}, cost: {}'.format(prog, time.time()-start))
+                #     start = time.time()

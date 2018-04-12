@@ -1,7 +1,7 @@
 from model.rdf_graph import RdfGraph
 
-import logging
-import time
+# import logging
+# import time
 
 class DBPediaGraph(RdfGraph):
     def __init__(self):
@@ -11,16 +11,16 @@ class DBPediaGraph(RdfGraph):
         return label.startswith('"') == False
 
     def load(self, path):
-        prog = 0
-        start = time.time()
-        logger = logging.getLogger()
+        # prog = 0
+        # start = time.time()
+        # logger = logging.getLogger()
         with open(path) as fd:
             for line in fd: #readlines will buffer the data
                 # add an edge into graph
                 if line.startswith("#"):
                     continue
                 recs = line.split(" ")
-                prog += 1
+                # prog += 1
 
                 sub = recs[0]
                 rel = recs[1]
@@ -28,8 +28,8 @@ class DBPediaGraph(RdfGraph):
 
                 if self.is_iri(sub) and self.is_iri(obj):
                     self.add_edge(sub, rel, obj)
-                if prog % 10000 == 0:
-                    logger.info('progress: {}, cost: {}'.format(prog, time.time()-start))
-                    start = time.time()
+                # if prog % 10000 == 0:
+                #     logger.info('progress: {}, cost: {}'.format(prog, time.time()-start))
+                #     start = time.time()
             
 

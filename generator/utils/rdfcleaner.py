@@ -45,7 +45,7 @@ class RDFCleaner(object):
         start = time.time()
         logger.info("Spliting test/train/valid sets ... ")
         self.split_datasets(triples)
-        logger.info("Extracting cost: {}".format(time.time() - start))
+        logger.info("Spliting cost: {}".format(time.time() - start))
         self._finalize()
 
     def load_rdf_graph(self, path):
