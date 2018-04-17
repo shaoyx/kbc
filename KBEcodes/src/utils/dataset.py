@@ -48,7 +48,7 @@ class Vocab(object):
         self.word2id = {}
 
     def add(self, word):
-        if word not in self.id2word:
+        if word not in self.word2id:
             self.word2id[word] = len(self.id2word)
             self.id2word.append(word)
 
