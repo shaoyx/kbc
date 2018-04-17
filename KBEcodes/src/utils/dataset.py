@@ -56,7 +56,12 @@ class Vocab(object):
         return len(self.id2word)
 
     def __getitem__(self, word):
-        return self.word2id[word]
+        # modified to adapt to FB15k-237 dataset
+        if word in self.word2id.keys():
+            return self.word2id[word]
+        else:
+            self.add(word)
+            return self.word2id[word]
 
     @classmethod
     def load(cls, vocab_path):

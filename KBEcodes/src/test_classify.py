@@ -28,6 +28,8 @@ def test(args):
         from models.analogy import ANALOGY as Model
     elif args.method == 'transe_set':
         from models.transe_set import TransE_set as Model
+    elif args.method == 'line':
+        from models.line_model import LineModel as Model
     else:
         raise NotImplementedError
 

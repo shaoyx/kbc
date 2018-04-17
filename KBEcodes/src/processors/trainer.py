@@ -60,6 +60,8 @@ class PairwiseTrainer(Trainer):
         assert type(train_dat) == TripletDataset
         self._setup()
         for epoch in range(self.n_epoch):
+            if self.model.__class__.__name__ == 'LineModel':
+                self.opt.normalize()
             start = time.time()
             self.cur_epoch += 1
             start = time.time()
@@ -70,6 +72,7 @@ class PairwiseTrainer(Trainer):
                 loss = self.model.compute_gradients(np.tile(pos_triplets, (self.n_negative, 1)), neg_triplets)
                 self.opt.update()
                 sum_loss += loss
+
 
             if self.valid_dat:  # run validation
                 cur_best_epoch = self._validation()

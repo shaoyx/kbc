@@ -28,6 +28,8 @@ def test(args):
         from models.analogy import ANALOGY as Model
     elif args.method == 'transe_set':
         from models.transe_set import TransE_set as Model
+    elif args.method == 'line':
+        from models.line_model import LineModel as Model
     else:
         raise NotImplementedError
 
@@ -45,7 +47,6 @@ def test(args):
     all_res = evaluator.run_all_matric(model, test_dat)
     for metric in sorted(all_res.keys()):
         print('{:20s}: {}'.format(metric, all_res[metric]))
-    evaluator.save_failure_cases(ent_vocab, rel_vocab, args.method)
 
 
 if __name__ == '__main__':

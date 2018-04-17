@@ -2,6 +2,7 @@
 from models.base_model import BaseModel
 from models.param import LookupParameter
 from utils.math_utils import *
+import numpy as np
 
 
 class TransE_set(BaseModel):
@@ -112,7 +113,15 @@ class TransE_set(BaseModel):
         return self._cal_similarity(qs, obj_emb)
 
     def pick_ent(self, ents):
-        return self.params['e'].data[ents]
+        ans = np.zeros(shape = (len(ents), self.dim))
+        cnt = 0
+        for ent in ents:
+            if ent < len(self.params['e'].data):
+                ans[cnt] = self.params['e'].data[ents]
+            else:
+                ans[cnt] = np.zeros(self.dim)
+            cnt += 1
+        return ans
 
     def pick_rel(self, rels):
         return self.params['r'].data[rels]

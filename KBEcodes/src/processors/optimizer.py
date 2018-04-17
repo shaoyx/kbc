@@ -14,6 +14,12 @@ class Optimizer(object):
             self._gradclip_addhook()
         self._update()
 
+    def normalize(self):
+        # print('normalizing')
+        self.params['r'].data = (self.params['r'].data.T / np.linalg.norm(self.params['r'].data, axis = 1)).T
+        # print('r = ', self.params['r'].data[0])
+        # print('norm = ', np.linalg.norm(self.params['r'].data[0]))
+
     def _update(self, **kwargs):
         raise NotImplementedError
 

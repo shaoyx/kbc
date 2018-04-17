@@ -112,6 +112,13 @@ def train(args):
                        margin=args.margin,
                        dim=args.dim,
                        mode=args.mode)
+    elif args.method == 'line':
+        from models.line_model import LineModel
+        model = LineModel(n_entity=n_entity,
+                       n_relation=n_relation,
+                       margin=args.margin,
+                       dim=args.dim,
+                       mode=args.mode)
 
     else:
         raise NotImplementedError
@@ -152,7 +159,7 @@ if __name__ == '__main__':
     p.add_argument('--valid', type=str, help='validation data')
 
     # model
-    p.add_argument('--method', default='complex', type=str, help='method ["complex", "distmult", "transe", "hole", "rescal", "analogy"]')
+    p.add_argument('--method', default='complex', type=str, help='method ["complex", "distmult", "transe", "hole", "rescal", "analogy", "transe_set", "line"]')
     p.add_argument('--epoch', default=300, type=int, help='number of epochs')
     p.add_argument('--batch', default=128, type=int, help='batch size')
     p.add_argument('--lr', default=0.05, type=float, help='learning rate')

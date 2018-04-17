@@ -34,17 +34,25 @@ def rel_classify(ent_vocab, rel_vocab, dat_path):
 				n_tail = n_tail + rel2tail[rel][ent]
 			# heads per tail = # heads / # (tail types)
 			# tails per head = # tails / # (head types)
-			hpt = n_head / len(rel2tail[rel].keys())
-			tph = n_tail / len(rel2head[rel].keys())
+			if len(rel2tail[rel].keys()) == 0:
+				hpt = 0
+			else:
+				hpt = n_head / len(rel2tail[rel].keys())
+
+			if len(rel2head[rel].keys()) == 0:
+				tph = 0
+			else:
+				tph = n_tail / len(rel2head[rel].keys())
+				
 			# print(rel_vocab.word2id[rel], rel)
 			if hpt > 1.5 and tph > 1.5:
 				rel_type[rel_vocab.word2id[rel]] = 'n-n'
 				rnn = rnn + 1
 			elif hpt > 1.5:
-				rel_type[rel_vocab.word2id[rel]] = 'n-1'
+				rel_type[rel_vocab.word2id[rel]] = '1-n'
 				rn1 = rn1 + 1 
 			elif tph > 1.5:
-				rel_type[rel_vocab.word2id[rel]] = '1-n'
+				rel_type[rel_vocab.word2id[rel]] = 'n-1'
 				r1n = r1n +1
 			else:
 				rel_type[rel_vocab.word2id[rel]] = '1-1'

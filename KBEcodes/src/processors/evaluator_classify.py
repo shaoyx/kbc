@@ -1,4 +1,3 @@
-
 import numpy as np
 from processors.classify import rel_classify
 
@@ -143,8 +142,8 @@ class Evaluator(object):
                     # n_corr_h1_flt_classified[self.type_inv(self.reltypes[rels[cnt]])] += rank <= 1
                     # n_corr_h3_flt_classified[self.type_inv(self.reltypes[rels[cnt]])] += rank <= 3
                     if rank <= 10:
-                        n_corr_h10_flt_classified_inv[self.type_inv(self.reltypes[rels[cnt]])] += 1
-                    n_rel_num_fil_inv[self.type_inv(self.reltypes[rels[cnt]])] += 1
+                        n_corr_h10_flt_classified_inv[self.reltypes[rels[cnt]]] += 1
+                    n_rel_num_fil_inv[self.reltypes[rels[cnt]]] += 1
                     cnt = cnt + 1
 
 
@@ -179,7 +178,7 @@ class Evaluator(object):
                 # 'Hits@1(filter)_1-n': n_corr_h1_flt_classified['1-n']/n_rel_num['1-n']/2,
                 # 'Hits@3(filter)_1-n': n_corr_h3_flt_classified['1-n']/n_rel_num['1-n']/2,
                 'Hits@10(filter)_head_1-n': n_corr_h10_flt_classified['1-n']/n_rel_num_fil['1-n'],
-                'Hits@10(filter)_tail_1-n': n_corr_h10_flt_classified_inv['1-n']/n_rel_num_fil_inv['1-n'],
+                'Hits@10(filter)_tail_1-n': n_corr_h10_flt_classified_inv['n-1']/n_rel_num_fil_inv['n-1'],
 
                 # 'MRR_n-1': sum_rr_raw_classified['n-1']/n_rel_num['n-1']/2,
                 # 'Hits@1_n-1': n_corr_h1_raw_classified['n-1']/n_rel_num['n-1']/2,
@@ -189,7 +188,7 @@ class Evaluator(object):
                 # 'Hits@1(filter)_n-1': n_corr_h1_flt_classified['n-1']/n_rel_num['n-1']/2,
                 # 'Hits@3(filter)_n-1': n_corr_h3_flt_classified['n-1']/n_rel_num['n-1']/2,
                 'Hits@10(filter)_head_n-1': n_corr_h10_flt_classified['n-1']/n_rel_num_fil['n-1'],
-                'Hits@10(filter)_tail_n-1': n_corr_h10_flt_classified_inv['n-1']/n_rel_num_fil_inv['n-1'],
+                'Hits@10(filter)_tail_n-1': n_corr_h10_flt_classified_inv['1-n']/n_rel_num_fil_inv['1-n'],
 
                 # 'MRR_n-n': sum_rr_raw_classified['n-n']/n_rel_num['n-n']/2,
                 # 'Hits@1_n-n': n_corr_h1_raw_classified['n-n']/n_rel_num['n-n']/2,
@@ -294,10 +293,3 @@ class Evaluator(object):
             self.sr2o[(s, r)] = os
             self.ro2s[(r, o)] = ss
 
-    def type_inv(self, reltype):
-        if reltype == '1-n':
-            return 'n-1'
-        elif reltype == 'n-1':
-            return '1-n'
-        else:
-            return reltype

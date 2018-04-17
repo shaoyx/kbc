@@ -1,7 +1,9 @@
 import numpy as np
 from math import sqrt
 def set_param(mode = 'default'):
-	model_path = "./utils/wn.embeddings"
+	model_name = "FB15K-237.embeddings"
+	model_path = "./utils/" + model_name
+	print("pretraining model:", model_name)
 	ent_embeddings = []
 	with open(model_path, "r") as f:
 		line = f.readline()
@@ -18,8 +20,6 @@ def set_param(mode = 'default'):
 	for ent in ent_embeddings:
 		temp = np.array(ent[1:])
 		ans.append(temp/sqrt(np.sum(temp**2)))
-		# print(ans[len(ans)-1])
-	# print(ans[0], ans[1], ans[2])
 	return np.array(ans)
 
 if __name__ == '__main__':

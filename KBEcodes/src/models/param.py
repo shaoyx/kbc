@@ -26,8 +26,6 @@ class LookupParameter(Parameter):
         self.grad_indices = None
         self.part_grads = None
         self.dim = shape[1]
-        print(shape[0], shape[1])
-        print(type(shape))
         if len(self.shape) == 2:
             self.idx2grad = defaultdict(lambda: np.zeros(self.dim))
         elif len(self.shape) == 3:  # for RESCAL
