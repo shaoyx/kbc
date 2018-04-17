@@ -15,10 +15,12 @@ class Optimizer(object):
         self._update()
 
     def normalize(self):
+        pass
         # print('normalizing')
         self.params['r'].data = (self.params['r'].data.T / np.linalg.norm(self.params['r'].data, axis = 1)).T
-        # print('r = ', self.params['r'].data[0])
-        # print('norm = ', np.linalg.norm(self.params['r'].data[0]))
+        # self.params['e'].data = (self.params['e'].data.T / np.linalg.norm(self.params['e'].data, axis = 1)).T
+        # print('s = ', self.params['e'].data[0])
+        # print('norm = ', np.linalg.norm(self.params['e'].data[0]))
 
     def _update(self, **kwargs):
         raise NotImplementedError

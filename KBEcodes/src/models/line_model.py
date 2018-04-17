@@ -43,13 +43,13 @@ class LineModel(BaseModel):
 
             _batchsize = len(pos_subs)
 
-            p_s_grads = np.zeros(np.shape(p_s_embs))
-            p_o_grads = np.zeros(np.shape(p_o_embs))
-            p_r_grads = np.zeros(np.shape(p_r_embs))
+            # p_s_grads = np.zeros(np.shape(p_s_embs))
+            # p_o_grads = np.zeros(np.shape(p_o_embs))
+            # p_r_grads = np.zeros(np.shape(p_r_embs))
 
-            n_s_grads = np.zeros(np.shape(n_s_embs))
-            n_o_grads = np.zeros(np.shape(n_o_embs))
-            n_r_grads = np.zeros(np.shape(n_r_embs))
+            # n_s_grads = np.zeros(np.shape(n_s_embs))
+            # n_o_grads = np.zeros(np.shape(n_o_embs))
+            # n_r_grads = np.zeros(np.shape(n_r_embs))
 
             # print(np.shape(np.sum(p_r_embs * p_o_embs, axis = 1)))
             # print('p len', len(pos_subs))
@@ -93,13 +93,13 @@ class LineModel(BaseModel):
             # n_o_grads = np.zeros(np.shape(n_o_embs))
             # n_r_grads = np.zeros(np.shape(n_r_embs))
 
-            # print('p_s_grads[0] = ', p_s_grads[0])
-            # print('p_s_embs[0] = ', p_s_embs[0])
-            # print('norm(p_s_embs[0]) = ', np.linalg.norm(p_s_embs))
+            print('p_s_grads[0] = ', p_s_grads[0])
+            print('p_s_embs[0] = ', p_s_embs[0])
+            print('norm(p_s_embs[0]) = ', np.linalg.norm(p_s_embs[0]))
 
-            # print('p_r_grads[0] = ', p_r_grads[0])
-            # print('p_r_embs[0] = ', p_r_embs[0])
-            # print('norm(p_r_embs[0]) = ', np.linalg.norm(p_r_embs[0]))
+            print('p_r_grads[0] = ', p_r_grads[0])
+            print('p_r_embs[0] = ', p_r_embs[0])
+            print('norm(p_r_embs[0]) = ', np.linalg.norm(p_r_embs[0]))
 
             # print()
 

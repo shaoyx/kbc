@@ -60,14 +60,15 @@ class PairwiseTrainer(Trainer):
         assert type(train_dat) == TripletDataset
         self._setup()
         for epoch in range(self.n_epoch):
-            if self.model.__class__.__name__ == 'LineModel':
-                self.opt.normalize()
             start = time.time()
             self.cur_epoch += 1
             start = time.time()
             sum_loss = 0.
             self.logger.info('start {} epoch'.format(epoch+1))
+
             for pos_triplets in train_dat.batch_iter(self.batchsize):
+                if self.model.__class__.__name__ == 'LineModel':
+                    self.opt.normalize()
                 neg_triplets = self.neg_generator.generate(pos_triplets)
                 loss = self.model.compute_gradients(np.tile(pos_triplets, (self.n_negative, 1)), neg_triplets)
                 self.opt.update()
