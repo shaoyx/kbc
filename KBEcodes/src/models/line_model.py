@@ -93,13 +93,13 @@ class LineModel(BaseModel):
             # n_o_grads = np.zeros(np.shape(n_o_embs))
             # n_r_grads = np.zeros(np.shape(n_r_embs))
 
-            print('p_s_grads[0] = ', p_s_grads[0])
-            print('p_s_embs[0] = ', p_s_embs[0])
-            print('norm(p_s_embs[0]) = ', np.linalg.norm(p_s_embs[0]))
+            # print('p_s_grads[0] = ', p_s_grads[0])
+            # print('p_s_embs[0] = ', p_s_embs[0])
+            # print('norm(p_s_embs[0]) = ', np.linalg.norm(p_s_embs[0]))
 
-            print('p_r_grads[0] = ', p_r_grads[0])
-            print('p_r_embs[0] = ', p_r_embs[0])
-            print('norm(p_r_embs[0]) = ', np.linalg.norm(p_r_embs[0]))
+            # print('p_r_grads[0] = ', p_r_grads[0])
+            # print('p_r_embs[0] = ', p_r_embs[0])
+            # print('norm(p_r_embs[0]) = ', np.linalg.norm(p_r_embs[0]))
 
             # print()
 
@@ -123,7 +123,7 @@ class LineModel(BaseModel):
         raise NotImplementedError('Only pairwise setting is available')
 
     def _cal_similarity(self, sub_emb, rel_emb, obj_emb):
-        dist = (obj_emb - sub_emb) + (np.sum(rel_emb * (obj_emb - sub_emb), axis = 1) * rel_emb.T).T
+        dist = (sub_emb - obj_emb) + (np.sum(rel_emb * (obj_emb - sub_emb), axis = 1) * rel_emb.T).T
         return -np.sum(dist ** 2, axis=1)
 
     def cal_scores(self, subs, rels):
@@ -135,7 +135,7 @@ class LineModel(BaseModel):
         score_mat = np.empty((_batchsize, self.n_entity))
         for i in range(_batchsize):
             qs = sub_emb[i] - self.pick_ent(np.arange(self.n_entity))
-            score_mat[i] = - np.linalg.norm(qs + np.outer(qs.dot(rel_emb[i]), (rel_emb[i])), axis=1) ** 2
+            score_mat[i] = - np.linalg.norm(qs + np.outer((-qs).dot(rel_emb[i]), (rel_emb[i])), axis=1) ** 2
         return score_mat
 
     # TODO: this procedure is the same as cal_scores
@@ -148,7 +148,7 @@ class LineModel(BaseModel):
         score_mat = np.empty((_batchsize, self.n_entity))
         for i in range(_batchsize):
             qs = sub_emb[i] - self.pick_ent(np.arange(self.n_entity))
-            score_mat[i] = - np.linalg.norm(qs + np.outer(qs.dot(rel_emb[i]), (rel_emb[i])), axis=1) ** 2
+            score_mat[i] = - np.linalg.norm(qs + np.outer((-qs).dot(rel_emb[i]), (rel_emb[i])), axis=1) ** 2
         return score_mat
 
     def cal_triplet_scores(self, samples):

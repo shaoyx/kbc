@@ -68,7 +68,7 @@ class PairwiseTrainer(Trainer):
 
             for pos_triplets in train_dat.batch_iter(self.batchsize):
                 if self.model.__class__.__name__ == 'LineModel':
-                    self.opt.normalize()
+                    self.opt.normalize('r')
                 neg_triplets = self.neg_generator.generate(pos_triplets)
                 loss = self.model.compute_gradients(np.tile(pos_triplets, (self.n_negative, 1)), neg_triplets)
                 self.opt.update()

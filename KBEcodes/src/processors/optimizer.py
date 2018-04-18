@@ -14,10 +14,9 @@ class Optimizer(object):
             self._gradclip_addhook()
         self._update()
 
-    def normalize(self):
-        pass
-        # print('normalizing')
-        self.params['r'].data = (self.params['r'].data.T / np.linalg.norm(self.params['r'].data, axis = 1)).T
+    def normalize(self, paraname):
+        for para in paraname:
+            self.params[para].data = (self.params[para].data.T / np.linalg.norm(self.params[para].data, axis = 1)).T
         # self.params['e'].data = (self.params['e'].data.T / np.linalg.norm(self.params['e'].data, axis = 1)).T
         # print('s = ', self.params['e'].data[0])
         # print('norm = ', np.linalg.norm(self.params['e'].data[0]))
