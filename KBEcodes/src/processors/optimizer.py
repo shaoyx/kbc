@@ -14,6 +14,13 @@ class Optimizer(object):
             self._gradclip_addhook()
         self._update()
 
+    def update(self, **kwargs):
+        if hasattr(self, 'l2_coeff'):
+            self._l2_addhook()
+        if hasattr(self, 'gc_norm'):
+            self._gradclip_addhook()
+        self._update(timestamp=kwargs.pop("timestamp"))
+
     def normalize(self, paraname):
         for para in paraname:
             self.params[para].data = (self.params[para].data.T / np.linalg.norm(self.params[para].data, axis = 1)).T
@@ -80,6 +87,21 @@ class SGD(Optimizer):
                     param.data[idxs] -= self.lr * np.array(param.part_grads)
             else:
                 param.data -= self.lr * param.grad
+
+class DecaySGD(Optimizer):
+    def __init__(self, lr):
+        self.lr = lr
+
+    def _update(self, **kwargs):
+        timestamp = kwargs.pop("timestamp")
+        decay_factor = 1 / np.sqrt(timestamp * 0.5 + 1)
+        for param in self.params.values():
+            if type(param) == LookupParameter:
+                idxs = param.grad_indices
+                if len(idxs) != 0:
+                    param.data[idxs] -= self.lr * decay_factor * np.array(param.part_grads)
+            else:
+                param.data -= self.lr * decay_factor * param.grad
 
 class Adagrad(Optimizer):
     def __init__(self, lr, eps=1e-8):

@@ -7,7 +7,7 @@ import os
 
 from processors.trainer import PairwiseTrainer, SingleTrainer
 from processors.evaluator import Evaluator
-from processors.optimizer import SGD, Adagrad
+from processors.optimizer import SGD, Adagrad, DecaySGD
 from utils.dataset import TripletDataset, Vocab
 
 
@@ -53,6 +53,8 @@ def train(args):
         opt = SGD(args.lr)
     elif args.opt == 'adagrad':
         opt = Adagrad(args.lr)
+    elif args.opt == 'dsgd':
+        opt = DecaySGD(args.lr)
     else:
         raise NotImplementedError
 
@@ -166,7 +168,7 @@ if __name__ == '__main__':
     p.add_argument('--dim', default=200, type=int, help='dimension of embeddings')
     p.add_argument('--margin', default=1., type=float, help='margin in max-margin loss for pairwise training')
     p.add_argument('--negative', default=10, type=int, help='number of negative samples for pairwise training')
-    p.add_argument('--opt', default='adagrad', type=str, help='optimizer ["sgd", "adagrad"]')
+    p.add_argument('--opt', default='adagrad', type=str, help='optimizer ["sgd", "adagrad", "dsgd"]')
     p.add_argument('--l2_reg', default=0.0001, type=float, help='L2 regularization')
     p.add_argument('--gradclip', default=5, type=float, help='gradient clipping')
     p.add_argument('--save_step', default=100, type=int, help='epoch step for saving model')

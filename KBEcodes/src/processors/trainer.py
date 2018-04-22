@@ -71,7 +71,10 @@ class PairwiseTrainer(Trainer):
                     self.opt.normalize('r')
                 neg_triplets = self.neg_generator.generate(pos_triplets)
                 loss = self.model.compute_gradients(np.tile(pos_triplets, (self.n_negative, 1)), neg_triplets)
-                self.opt.update()
+                if self.opt.__class__.__name__ == 'DecaySGD':
+                    self.opt.update(timestamp=epoch)
+                else:
+                    self.opt.update()
                 sum_loss += loss
 
 
