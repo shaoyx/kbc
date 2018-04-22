@@ -7,7 +7,7 @@ from utils.math_utils import *
 
 
 class Optimizer(object):
-    def update(self):
+    def update2(self):
         if hasattr(self, 'l2_coeff'):
             self._l2_addhook()
         if hasattr(self, 'gc_norm'):
