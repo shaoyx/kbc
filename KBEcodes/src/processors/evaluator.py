@@ -56,33 +56,33 @@ class Evaluator(object):
             raw_scores = model.cal_scores(subs, rels)
             raw_ranks = self.cal_rank(raw_scores, objs)
             sum_rr_raw += sum(float(1/rank) for rank in raw_ranks)
-            n_corr_h1_raw += sum(1 for rank in raw_ranks if rank <= 1)
-            n_corr_h3_raw += sum(1 for rank in raw_ranks if rank <= 3)
-            n_corr_h10_raw += sum(1 for rank in raw_ranks if rank <= 10)
+            n_corr_h1_raw += sum(1 for rank in raw_ranks if rank <= 2)
+            n_corr_h3_raw += sum(1 for rank in raw_ranks if rank <= 4)
+            n_corr_h10_raw += sum(1 for rank in raw_ranks if rank <= 11)
             # filter
             if self.filtered:
                 flt_scores = self.cal_filtered_score_fast(subs, rels, objs, ids, raw_scores)
                 flt_ranks = self.cal_rank(flt_scores, objs)
                 sum_rr_flt += sum(float(1/rank) for rank in flt_ranks)
-                n_corr_h1_flt += sum(1 for rank in flt_ranks if rank <=1)
-                n_corr_h3_flt += sum(1 for rank in flt_ranks if rank <=3)
-                n_corr_h10_flt += sum(1 for rank in flt_ranks if rank <=10)
+                n_corr_h1_flt += sum(1 for rank in flt_ranks if rank <=2)
+                n_corr_h3_flt += sum(1 for rank in flt_ranks if rank <=4)
+                n_corr_h10_flt += sum(1 for rank in flt_ranks if rank <=11)
 
             # search subjects
             raw_scores_inv = model.cal_scores_inv(rels, objs)
             raw_ranks_inv = self.cal_rank(raw_scores_inv, subs)
             sum_rr_raw += sum(float(1/rank) for rank in raw_ranks_inv)
-            n_corr_h1_raw += sum(1 for rank in raw_ranks_inv if rank <= 1)
-            n_corr_h3_raw += sum(1 for rank in raw_ranks_inv if rank <= 3)
-            n_corr_h10_raw += sum(1 for rank in raw_ranks_inv if rank <= 10)
+            n_corr_h1_raw += sum(1 for rank in raw_ranks_inv if rank <= 2)
+            n_corr_h3_raw += sum(1 for rank in raw_ranks_inv if rank <= 4)
+            n_corr_h10_raw += sum(1 for rank in raw_ranks_inv if rank <= 11)
             # filter
             if self.filtered:
                 flt_scores_inv = self.cal_filtered_score_inv_fast(subs, rels, objs, ids, raw_scores_inv)
                 flt_ranks_inv = self.cal_rank(flt_scores_inv, subs)
                 sum_rr_flt += sum(float(1/rank) for rank in flt_ranks_inv)
-                n_corr_h1_flt += sum(1 for rank in flt_ranks_inv if rank <= 1)
-                n_corr_h3_flt += sum(1 for rank in flt_ranks_inv if rank <= 3)
-                n_corr_h10_flt += sum(1 for rank in flt_ranks_inv if rank <= 10)
+                n_corr_h1_flt += sum(1 for rank in flt_ranks_inv if rank <= 2)
+                n_corr_h3_flt += sum(1 for rank in flt_ranks_inv if rank <= 4)
+                n_corr_h10_flt += sum(1 for rank in flt_ranks_inv if rank <= 11)
 
             start_id += len(samples)
 
