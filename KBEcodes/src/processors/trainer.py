@@ -74,7 +74,7 @@ class PairwiseTrainer(Trainer):
                 if self.opt.__class__.__name__ == 'DecaySGD':
                     self.opt.update(timestamp=epoch)
                 else:
-                    self.opt.update()
+                    self.opt.update2()
                 sum_loss += loss
 
 
