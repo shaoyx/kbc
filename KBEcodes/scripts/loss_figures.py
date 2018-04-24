@@ -76,5 +76,4 @@ if __name__ == "__main__":
 	plt.legend(handles = lines, labels = legends, loc = 'best')
 
 	plt.savefig(title+'.png', dpi=300)
-	plt.show()
 	

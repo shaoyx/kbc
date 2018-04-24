@@ -20,12 +20,13 @@ dataset="wordnet"
 
 for lr in ${lr_arrs[@]}; do
     for opt in ${opt_arrs[@]}; do
-        cmd_train="python train.py --mode pairwise --ent ${ent_list} --rel ${rel_list} --train ${train_data} --method ${method} --epoch ${epoch} --margin ${margin} --opt ${opt} --lr ${lr} --log ../log/linemodel_fb15k_${lr}_${opt}"
+        log_path="../log/linemodel_${dataset}_${lr}_${opt}"
+        cmd_train="python train.py --mode pairwise --ent ${ent_list} --rel ${rel_list} --train ${train_data} --method ${method} --epoch ${epoch} --margin ${margin} --opt ${opt} --lr ${lr} --log ${log_path}"
         echo ${cmd_train}
-        mkdir -p ../log/linemodel_${dataset}_${lr}_${opt}
+        mkdir -p ${log_path}
         ${cmd_train}
-        cmd_test="python test.py --method line --ent ${ent_list} --rel ${rel_list} --data ${test_data} --filtered --graphall ${whole_data} --model ../log/linemodel_${dataset}_${lr}_${opt}/LineModel.epoch400"
+        cmd_test="python test.py --method line --ent ${ent_list} --rel ${rel_list} --data ${test_data} --filtered --graphall ${whole_data} --model ${log_path}/LineModel.epoch500"
         echo ${cmd_test}
-        cmd_test
+        ${cmd_test}
     done
 done
