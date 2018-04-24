@@ -95,13 +95,14 @@ class DecaySGD(Optimizer):
     def _update(self, **kwargs):
         timestamp = kwargs.pop("timestamp")
         decay_factor = 1 / np.sqrt(timestamp * 0.5 + 1)
+        lr = np.maximum(0.001, self.lr * decay_factor)
         for param in self.params.values():
             if type(param) == LookupParameter:
                 idxs = param.grad_indices
                 if len(idxs) != 0:
-                    param.data[idxs] -= self.lr * decay_factor * np.array(param.part_grads)
+                    param.data[idxs] -= lr * np.array(param.part_grads)
             else:
-                param.data -= self.lr * decay_factor * param.grad
+                param.data -= lr * param.grad
 
 class Adagrad(Optimizer):
     def __init__(self, lr, eps=1e-8):
