@@ -13,8 +13,8 @@ def random_xavier(size):
     return np.random.uniform(-bound, bound, size=size)
 
 
-def max_margin(pos_scores, neg_scores):
-    return np.maximum(0, 1 - (pos_scores - neg_scores))
+def max_margin(pos_scores, neg_scores, margin = 1):
+    return np.maximum(0, margin - (pos_scores - neg_scores))
 
 
 def sigmoid(x):
